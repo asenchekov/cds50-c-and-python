@@ -1,0 +1,89 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Quote
+{% endblock%}
+
+{% block main %}
+    {% if quote %}
+        <p>A share of {{ quote["name"] }} ({{ quote["symbol"] }}) costs {{ quote["price"] }}.</p>
+    {% else %}
+    <form action="/quote" method="post">
+        <div class="form-group">
+            <input id="symbol" autocomplete="off" autofocus class="form-control" name="symbol" placeholder="Symbol" type="text">
+        </div>
+        <button id="quote" class="btn btn-primary" type="submit">Quote</button>
+    </form>
+    <div class="container md">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Symbol</th>
+                    <th>Name</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        $(document).ready(function(){
+            var symbols = [];
+            var list = [];
+            $.get({
+                url: "https://api.iextrading.com/1.0/ref-data/symbols",
+                success: function(result){
+                            symbols.push(result);
+                        }
+            });
+            var input = $('#symbol');
+            input.keyup(function(){
+                list = [];
+                if(input.val() != ""){
+                    symbols[0].forEach(function(each){
+                        var inputValue = input.val().toUpperCase();
+                        var index = each.symbol.slice(0, inputValue.length);
+                        if(inputValue === index){
+                            list.push(
+                                "<tr><td>"
+                                + each.symbol + "</td><td>"
+                                + each.name + "</td></tr>");
+                        }
+                    });
+                }
+                $('tbody').html(list);
+            });
+            $("#quote").click(function(event){
+                event.preventDefault();
+                var symbol = $('#symbol').val();
+                if(!symbol) {
+                  var image = '<img alt="400" class="border" src="http://memegen.link/custom/'
+                            + encodeURIComponent(400)+ '/' + encodeURIComponent('Missing symbol')
+                            + '.jpg?alt=https://i.imgur.com/CsCgN7Ll.png" title="400">';
+                      $('main').html(image);
+                }
+                else {
+                    $.post({
+                        url: "https://ide50-achekov.legacy.cs50.io:8080/quote",
+                        data: {
+                            ajax_symbol: symbol
+                        },
+                        success: function(result){
+                                    var paragraph = `<p>A share of ${result.name} (${result.symbol}) costs ${result.price}.</p>`;
+                                    $('main').html(paragraph);
+                                },
+                        statusCode: {
+                            400: function() {
+                                var image = '<img alt="400" class="border" src="http://memegen.link/custom/'
+                                    + encodeURIComponent(400)+ '/' + encodeURIComponent('Invalid symbol')
+                                    + '.jpg?alt=https://i.imgur.com/CsCgN7Ll.png" title="400">';
+                                $('main').html(image);
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+    {% endif %}
+{% endblock %}

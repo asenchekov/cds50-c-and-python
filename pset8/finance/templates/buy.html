@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Buy shares
+{% endblock %}
+
+{% block main %}
+    <form action="/buy" method="post">
+        <div class="form-group">
+            <input id="shares" type="text" class="form-control" autofocus autocomplete="off" name="symbol" placeholder="Symbol">
+        </div>
+        <div class="form-group">
+            <input autocomplete="off" class="form-control" min="1" name="shares" placeholder="Shares" type="number">
+        </div>
+        <button class="btn btn-primary" type="submit">Buy</button>
+    </form>
+    <div class="container md">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Symbol</th>
+                    <th>Name</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        $(document).ready(function(){
+            var symbols = [];
+            var list = [];
+            $.get({
+                url: "https://api.iextrading.com/1.0/ref-data/symbols",
+                success: function(result){
+                            symbols.push(result);
+                        }
+            });
+            var input = $('#shares');
+            input.keyup(function(){
+                list = [];
+                if(input.val() != ""){
+                    symbols[0].forEach(function(each){
+                        var inputValue = input.val().toUpperCase();
+                        var index = each.symbol.slice(0, inputValue.length)
+                        if(inputValue === index){
+                            list.push(
+                                "<tr><td>"
+                                + each.symbol + "</td><td>"
+                                + each.name + "</td></tr>");
+                        }
+                    });
+                }
+                $('tbody').html(list);
+            });
+        });
+    </script>
+{% endblock %}

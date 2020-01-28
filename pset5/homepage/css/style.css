@@ -1,0 +1,89 @@
+body{
+    background: url('../images/webpage-background.jpg');
+    background-size: cover;
+}
+
+.home {
+    height: 95vh;
+}
+
+.head {
+    color: #007bff;
+    text-align: center;
+}
+
+#profile-image {
+    width: 40vw;
+    max-width: 450px;
+    border-radius: 10% 10% 10% 10%;
+    border: 3px solid #007bff;
+}
+
+.nav-item {
+    transition: ease 1s;
+}
+
+.nav-item:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.header {
+    margin-top: 12vh;
+}
+
+.para-box {
+    margin-top: 2%;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 10px 10px 10px 10px;
+    color: white;
+    padding: 4% 5%;
+}
+
+p {
+    font-size: 1.2rem;
+}
+
+.contact-me {
+    margin-top: 10vh;
+}
+
+.contact-me-block {
+    background-color: rgba(255, 255, 255, 0.3);
+    color: white;
+    text-align: center;
+    width: 50vw;
+    margin: 5vh auto;
+    border-radius: 10px 10px 10px 10px;
+    font-size: 2rem;
+    padding: 2% 5%;
+}
+.hobbies-media-box {
+    width: 90%;
+    margin: auto;
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.hobbies-media-box img {
+    width: 100%;
+    margin: 5% 0 5% 0;
+    height: auto;
+    /*max-width: 300px;*/
+}
+
+span {
+    color: #007bff;
+    text-shadow: 1px 1px black;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    background-color: black;
+    color: white;
+    height: 4vh;
+    width: 100vw;
+}
+
+footer p {
+    margin: 0;
+}

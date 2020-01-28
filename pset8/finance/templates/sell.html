@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Sell
+{% endblock %}
+
+{% block main %}
+    <form action="/sell" method="post">
+        <div class="form-group">
+            <select class="form-control" name="symbol">
+                <option disabled selected value="">Symbol</option>
+                {% for option in options %}
+                    <option value={{ option["stockId"] }}>{{ option["stockId"] }} owns: {{ option["shares"] }} shares</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <input id="shares" autocomplete="off" class="form-control" min="0" name="shares" placeholder="Shares" type="number">
+        </div>
+        <button id="submit" class="btn btn-primary" type="submit">Sell</button>
+    </form>
+    <script>
+        $(document).ready(function(){
+           $("#submit").click(function(event){
+                var symbol = $( "select option:selected" ).val();
+                var shares = $("#shares").val();
+                if(symbol === "") {
+                    event.preventDefault();
+                    var image = '<img alt="400" class="border" src="http://memegen.link/custom/'
+                            + encodeURIComponent(400)+ '/' + encodeURIComponent('Missing symbol')
+                            + '.jpg?alt=https://i.imgur.com/CsCgN7Ll.png" title="400">';
+                      $('main').html(image);
+                }
+                else if(shares === "") {
+                    event.preventDefault();
+                    var image = '<img alt="400" class="border" src="http://memegen.link/custom/'
+                            + encodeURIComponent(400)+ '/' + encodeURIComponent('Missing shares')
+                            + '.jpg?alt=https://i.imgur.com/CsCgN7Ll.png" title="400">';
+                      $('main').html(image);
+                }
+            });
+        });
+    </script>
+{% endblock %}

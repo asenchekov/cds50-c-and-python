@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block main %}
+    <form action="/register" method="post">
+        <div class="form-group">
+            <input id="username" autocomplete="off" autofocus class="form-control" name="username" placeholder="Username" type="text">
+        </div>
+        <div class="form-group">
+            <input class="form-control" name="password" placeholder="Password" type="password">
+        </div>
+        <div class="form-group">
+            <input class="form-control" name="confirmation" placeholder="Repeat password" type="password">
+        </div>
+        <button id="register" class="btn btn-primary" type="submit">Register</button>
+    </form>
+    <script>
+        $(document).ready(function(){
+          $("#register").click(function(event){
+              event.preventDefault();
+              var username = $('#username').val();
+            $.ajax({
+                url: "https://ide50-achekov.legacy.cs50.io:8080/check",
+                data: {
+                    username: username
+                },
+                success: function(response){
+                        console.log(response);
+                        if(response === true){
+                            $('form').submit();
+                        } else {
+                            alert("Username already taken");
+                        }
+                }
+            });
+          });
+        });
+    </script>
+{% endblock %}
